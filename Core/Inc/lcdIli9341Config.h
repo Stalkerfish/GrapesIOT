@@ -9,7 +9,7 @@
 #define LCDILI9341_LCDILI9341CONFIG_H_
 
 #define BIT_WIDTH_16
-#define FSMC_Ax               18              // use A16 as RS
+#define FSMC_Ax               18              // use A18 as RS
 #define FSMC_NEx              1               // use subbank 1
 
 
