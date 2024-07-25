@@ -36,7 +36,14 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define OV5640_WIDTH  800
+#define OV5640_HEIGHT 480
+#define BUFFER_COUNT 8
+#define BUFFER_SIZE (OV5640_WIDTH * OV5640_HEIGHT / BUFFER_COUNT)
 
+#define FRAME_SIZE 800*480/8
+
+#define SD_BLOCK_SIZE 512  // SD card block size
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -51,7 +58,7 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+extern uint16_t Timer1, Timer2;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -184,6 +191,10 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
+	if(Timer1 > 0)
+		Timer1--;
+	if(Timer2 > 0)
+		Timer2--;
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
@@ -211,6 +222,24 @@ void DMA2_Stream1_IRQHandler(void)
   /* USER CODE BEGIN DMA2_Stream1_IRQn 1 */
 
   /* USER CODE END DMA2_Stream1_IRQn 1 */
+}
+
+void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef *hdcmi) {
+    // frame_captured = 1;
+}
+
+void HAL_DCMI_LineEventCallback(DCMI_HandleTypeDef *hdcmi) {
+    // Code to handle line event if needed
+}
+
+void HAL_DCMI_VsyncEventCallback(DCMI_HandleTypeDef *hdcmi) {
+    // Code to handle VSYNC event if needed
+}
+
+void HAL_DMA_ConvCpltCallback(DMA_HandleTypeDef *hdma) {
+   // if (hdma->Instance == DMA2_Stream1) {
+   //     write_index = (write_index + FRAME_SIZE) % BUFFER_SIZE;
+   // }
 }
 
 /**
